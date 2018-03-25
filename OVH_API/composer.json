@@ -1,0 +1,8 @@
+{
+    "name": "Default script",
+    "description": "This is a skeleton of script using OVH APIs",
+    "require": {
+        "ovh/ovh": ">1.0.0"
+    }
+}
+

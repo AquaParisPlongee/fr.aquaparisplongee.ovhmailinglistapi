@@ -1,4 +1,7 @@
 <?php
+// require_once __DIR__ . '/../../../OVH_API/vendor/autoload.php';
+// require_once __DIR__ . '/../../../OVH_API/credential.php';
+// use \Ovh\Api;
 
 /**
  * OVHMailingList.Modify API specification (optional)
@@ -27,7 +30,7 @@ function _civicrm_api3_ovhmailinglist_modify_spec(&$spec) {
     $spec['modify'] = array(
         'title' => 'List name',
         // 'type' => CRM_Utils_Type::T_ENUM,
-        'type' => CRM_Utils_Type::T_STRING,
+        'type' => CRM_Utils_Type::T_INT,
         'api.required' => 1,
     );
     $spec['case_id'] = array(
@@ -46,6 +49,8 @@ function _civicrm_api3_ovhmailinglist_modify_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_ovhmailinglist_modify($params) {	
+  $txt = "inititation";
+  $myfile = file_put_contents(__DIR__ . '/logs.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
   $version = CRM_Core_BAO_Domain::version();
   if (!preg_match('/[0-9]+(,[0-9]+)*/i', $params['contact_id'])) {
     throw new API_Exception('Parameter contact_id must be a unique id or a list of ids separated by comma');
@@ -118,15 +123,24 @@ function civicrm_api3_ovhmailinglist_modify($params) {
     //
     /// TODO: The real action occure here.
     // set up the parameters for CRM_Utils_Mail::send
-    $mailParams = array(
-        'groupName' => 'OVH mailinglist from API',
-        'from' => $from,
-        'toName' => $toName,
-        'toEmail' => $email,
-        'subject' => $messageSubject,
-        'messageTemplateID' => $messageTemplates->id,
-    );
-    $result = CRM_Utils_Mail::send($mailParams);
+    if (modify == 0){
+        throw new API_Exception('Remove ' . $contact['display_name'] . ' <' . $email . '> ');
+        // $ovh = new Api($applicationKey,
+        //                $applicationSecret,
+        //                $endpoint,
+        //                $DELETE_consumer_key);
+    } else {
+        throw new API_Exception('Add ' . $contact['display_name'] . ' <' . $email . '> ');
+        // $ovh = new Api($applicationKey,
+        //                $applicationSecret,
+        //                $endpoint,
+        //                $POST_consumer_key);
+        //
+        // $result = $ovh->post('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber',
+        //                      array(
+        //                         'email' => $email, // Required: Email of subscriber (type: string)
+        //                     ));
+    }
     if (!$result) {
       throw new API_Exception('Error sending e-mail to ' . $contact['display_name'] . ' <' . $email . '> ');
     }
@@ -181,7 +195,7 @@ function civicrm_api3_ovhmailinglist_modify($params) {
 
     $returnValues[$contactId] = array(
       'contact_id' => $contactId,
-      'send' => 1,
+      'modify' => 1,
       'status_msg' => "Succesfully modify subscription to $list_name@$list_domain",
     );
   }

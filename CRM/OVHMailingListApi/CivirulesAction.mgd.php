@@ -9,7 +9,7 @@ if (_ovhmailinglistapi_is_civirules_installed()) {
         'params' =>
           array (
             'version' => 3,
-            'name' => 'ovhmailinglistapi_send',
+            'name' => 'ovhmailinglistapi_modify',
             'label' => 'Modify OVH mailing list subscription',
             'class_name' => 'CRM_OVHMailingListApi_CivirulesAction',
             'is_active' => 1
