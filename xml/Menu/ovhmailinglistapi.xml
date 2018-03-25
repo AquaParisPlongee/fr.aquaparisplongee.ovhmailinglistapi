@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/civirules/actions/ovhmailinglistapi</path>
     <page_callback>CRM_OVHMailingListApi_Form_CivirulesAction</page_callback>
-    <title>E-mail api (civirules action)</title>
+    <title>OVH mailinglist api (civirules action)</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>

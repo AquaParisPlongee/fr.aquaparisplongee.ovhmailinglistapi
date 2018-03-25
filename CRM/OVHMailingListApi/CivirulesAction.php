@@ -14,7 +14,7 @@ class CRM_OVHMailingListApi_CivirulesAction extends CRM_CivirulesActions_Generic
    * @abstract
    */
   protected function getApiEntity() {
-    return 'Email';
+    return 'OVHMailingList';
   }
 
   /**
@@ -24,7 +24,7 @@ class CRM_OVHMailingListApi_CivirulesAction extends CRM_CivirulesActions_Generic
    * @abstract
    */
   protected function getApiAction() {
-    return 'send';
+    return 'modify';
   }
 
   /**
@@ -43,13 +43,6 @@ class CRM_OVHMailingListApi_CivirulesAction extends CRM_CivirulesActions_Generic
     if (!empty($actionParameters['file_on_case'])) {
       $case = $triggerData->getEntityData('Case');
       $parameters['case_id'] = $case['id'];
-    }
-		
-		if (!empty($actionParameters['cc'])) {
-      $parameters['cc'] = $actionParameters['cc'];
-    }
-		if (!empty($actionParameters['bcc'])) {
-      $parameters['bcc'] = $actionParameters['bcc'];
     }
 
     return $parameters;
@@ -76,40 +69,20 @@ class CRM_OVHMailingListApi_CivirulesAction extends CRM_CivirulesActions_Generic
    * @access public
    */
   public function userFriendlyConditionParams() {
-    $template = 'unknown template';
     $params = $this->getActionParameters();
-    $version = CRM_Core_BAO_Domain::version();
-    // Compatibility with CiviCRM > 4.3
-    if($version >= 4.4) {
-      $messageTemplates = new CRM_Core_DAO_MessageTemplate();
+    $who = ts('the contact');
+    if ($params['modify'] == 1){
+        $label = ts('Add');
+    } elseif ($params['modify'] == 2){
+        $label = ts('Delete');
     } else {
-      $messageTemplates = new CRM_Core_DAO_MessageTemplates();
+        $label = ts('Unkown');
     }
-    $messageTemplates->id = $params['template_id'];
-    $messageTemplates->is_active = true;
-    if ($messageTemplates->find(TRUE)) {
-      $template = $messageTemplates->msg_title;
-    }
-
-    $to = ts('the contact');
-    if (!empty($params['alternative_receiver_address'])) {
-      $to = $params['alternative_receiver_address'];
-    }
-		
-		if (!empty($params['cc'])) {
-      $cc = ts(' and cc to %1', array(1=>$params['cc']));
-    }
-		if (!empty($params['bcc'])) {
-      $bcc = ts(' and bcc to %1', array(1=>$params['bcc']));
-    }
-
-    return ts('Send e-mail from "%1 (%2)" with template "%3" to %4 %5 %6', array(
-        1=>$params['from_name'],
-        2=>$params['from_email'],
-        3=>$template,
-        4 => $to,
-        5 => $cc,
-        6 => $bcc
+    return ts('Modify the registration of %1 to the the mailing list %2@%3 (%4)', array(
+        1=>$who,
+        2=>$params['list_name'],
+        3=>$params['list_domain'],
+        4=>$label,
     ));
   }
 }

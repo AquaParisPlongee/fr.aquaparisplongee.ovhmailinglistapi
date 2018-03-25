@@ -57,50 +57,19 @@ class CRM_OVHMailingListApi_Form_CivirulesAction extends CRM_Core_Form {
     parent::preProcess();
   }
 
-  /**
-   * Method to get groups
-   *
-   * @return array
-   * @access protected
-   */
-
-  protected function getMessageTemplates() {
-    $return = array('' => ts('-- please select --'));
-    $dao = CRM_Core_DAO::executeQuery("SELECT * FROM `civicrm_msg_template` WHERE `is_active` = 1 AND `workflow_id` IS NULL ORDER BY msg_title");
-    while($dao->fetch()) {
-      $return[$dao->id] = $dao->msg_title;
-    }
-    return $return;
-  }
 
   function buildQuickForm() {
 
-    $this->setFormTitle();
-		$this->registerRule('emailList', 'callback', 'emailList', 'CRM_Utils_Rule');
+    // $this->setFormTitle();
+    // $this->registerRule('emailList', 'callback', 'emailList', 'CRM_Utils_Rule');
 
     $this->add('hidden', 'rule_action_id');
-
-
-
-    $this->add('text', 'from_name', ts('From name'), true);
-
-    $this->add('text', 'from_email', ts('From email'), true);
-    $this->addRule("from_email", ts('Email is not valid.'), 'email');
-
-    $this->add('checkbox','alternative_receiver', ts('Send to alternative e-mail address'));
-    $this->add('text', 'alternative_receiver_address', ts('Send to'));
-    $this->addRule("alternative_receiver_address", ts('Email is not valid.'), 'email');
-		
-		$this->add('text', 'cc', ts('Cc to'));
-    $this->addRule("cc", ts('Email is not valid.'), 'emailList');
-		
-		$this->add('text', 'bcc', ts('Bcc to'));
-    $this->addRule("bcc", ts('Email is not valid.'), 'emailList');
-
-    $this->add('select', 'template_id', ts('Message template'), $this->getMessageTemplates(), true);
+    $this->add('text', 'list_name', ts('List name'), TRUE, TRUE);
+    $this->add('text', 'list_domain', ts('List domain'), TRUE, TRUE);
+    $this->add('select', 'modify', ts('Add or remove'), array(ts('Add'), ts('Remove')), TRUE);
 
     if ($this->hasCase) {
-      $this->add('checkbox','file_on_case', ts('File e-mail on case'));
+      $this->add('checkbox','file_on_case', ts('File subscription on case'));
     }
     $this->assign('has_case', $this->hasCase);
 
@@ -122,24 +91,18 @@ class CRM_OVHMailingListApi_Form_CivirulesAction extends CRM_Core_Form {
     if (!empty($this->ruleAction->action_params)) {
       $data = unserialize($this->ruleAction->action_params);
     }
-    if (!empty($data['from_name'])) {
-      $defaultValues['from_name'] = $data['from_name'];
+    if (!empty($data['list_name'])) {
+      $defaultValues['list_name'] = $data['list_name'];
     }
-    if (!empty($data['from_email'])) {
-      $defaultValues['from_email'] = $data['from_email'];
+    if (!empty($data['list_domain'])) {
+      $defaultValues['list_domain'] = $data['list_domain'];
     }
-    if (!empty($data['template_id'])) {
-      $defaultValues['template_id'] = $data['template_id'];
-    }
-    if (!empty($data['alternative_receiver_address'])) {
-      $defaultValues['alternative_receiver_address'] = $data['alternative_receiver_address'];
-      $defaultValues['alternative_receiver'] = true;
-    }
-		if (!empty($data['cc'])) {
-      $defaultValues['cc'] = $data['cc'];
-    }
-		if (!empty($data['bcc'])) {
-      $defaultValues['bcc'] = $data['bcc'];
+    if (isset($data['modify'])) {
+      if ($data['modify'] == 1) {
+        $defaultValues['modify'] = 0;
+      } else {
+        $defaultValues['modify'] = 1;
+      }
     }
     $defaultValues['file_on_case'] = false;
     if (!empty($data['file_on_case'])) {
@@ -154,20 +117,14 @@ class CRM_OVHMailingListApi_Form_CivirulesAction extends CRM_Core_Form {
    * @access public
    */
   public function postProcess() {
-    $data['from_name'] = $this->_submitValues['from_name'];
-    $data['from_email'] = $this->_submitValues['from_email'];
-    $data['template_id'] = $this->_submitValues['template_id'];
-    $data['alternative_receiver_address'] = '';
-    if (!empty($this->_submitValues['alternative_receiver_address'])) {
-      $data['alternative_receiver_address'] = $this->_submitValues['alternative_receiver_address'];
-    }
-		$data['cc'] = '';
-    if (!empty($this->_submitValues['cc'])) {
-      $data['cc'] = $this->_submitValues['cc'];
-    }
-		$data['bcc'] = '';
-    if (!empty($this->_submitValues['bcc'])) {
-      $data['bcc'] = $this->_submitValues['bcc'];
+    $data['list_name'] = $this->_submitValues['list_name'];
+    $data['list_domain'] = $this->_submitValues['list_domain'];
+    if (isset($this->_submitValues['modify'])) {
+      if ($this->_submitValues['modify'] == 1) {
+        $data['modify'] = 0;
+      } else {
+        $data['modify'] = 1;
+      }
     }
     $data['file_on_case'] = false;
     if (!empty($this->_submitValues['file_on_case'])) {

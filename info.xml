@@ -1,31 +1,27 @@
 <?xml version="1.0"?>
 <extension key="fr.aquaparisplongee.ovhmailinglistapi" type="module">
   <file>ovhmailinglistapi</file>
-  <name>E-mail API</name>
-  <description>API to send an e-mail to a contact</description>
+  <name>OVH mailinglist API</name>
+  <description>API to modify the subscription to an OVH hosted mailing list</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Jaap Jansma - CiviCooP</author>
     <email>helpdesk@civicoop.org</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">https://github.com/CiviCooP/fr.aquaparisplongee.ovhmailinglistapi</url>
-    <url desc="documentation">https://github.com/CiviCooP/fr.aquaparisplongee.ovhmailinglistapi/blob/master/README.md</url>
-    <url desc="Support">http://civicoop.org</url>
+    <url desc="Main Extension Page">https://tobedetermined</url>
+    <url desc="documentation">https://tobedetermined/README.md</url>
+    <url desc="Support">http://tobedetermined</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
-  <releaseDate>2018-02-08</releaseDate>
-  <version>1.14</version>
+  <releaseDate>2018-03-18</releaseDate>
+  <version>0.1</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>4.3</ver>
-    <ver>4.4</ver>
-    <ver>4.5</ver>
-    <ver>4.6</ver>
     <ver>4.7</ver>
   </compatibility>
   <comments>
-    Original developed by http://civicoop.org. Contributed by http://www.ixiam.com
+      Original code based on the E-mail API extension https://github.com/CiviCooP/org.civicoop.emailapi
   </comments>
   <civix>
     <namespace>CRM/OVHMailingListApi</namespace>

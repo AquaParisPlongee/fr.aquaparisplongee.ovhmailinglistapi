@@ -1,15 +1,16 @@
 # fr.aquaparisplongee.ovhmailinglistapi
-E-mail API for CiviCRM to send e-mails through the API
+OVH mailinglist API for CiviCRM to modify the subscription to OVH hosted mailing
+list through the API. It use the OVH API the update teh subscription. Credential
+should be generated outside of the extension.
 
-The entity for the E-mail API is Email and the action is Send.
+The entity for the OVH mailinglist API is OVHMailingList and the action is
+Modify.
 Parameters for the api are specified below:
-- contact_id: list of contacts IDs to create the PDF Letter (separated by ",")
-- template_id: ID of the message template which will be used in the API.
-- from_name: **optional** name of the sender (if you provide this value you have also to provide from_email) 
-- from_email: **optional** e-mail of the sender (if you provide this value you have also to provide from_name)
-- alternative_receiver_address: **optional** alternative receiver address of the e-mail. 
+- contact_id: list of contacts IDs to modify the subscription (separated by ",")
+template_id:
+- list_name: name of the mailing list (from_email)
+- list_domain: the domain of the liste (from_name)
+- modify: action to do add/remove (alternative_receiver_address)
 - case_id: **optional** adds the e-mail to the case identified by this ID.
-
-*It is not possible to specify your own message through the API.*
 
     
