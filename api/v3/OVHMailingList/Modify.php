@@ -11,7 +11,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
-function _civicrm_api3_ovhmailinglist_modify_spec(&$spec) {
+function _civicrm_api3_o_v_h_mailing_list_modify_spec(&$spec) {
     $spec['contact_id'] = array(
         'title' => 'Contact ID',
         'type' => CRM_Utils_Type::T_INT,
@@ -48,9 +48,9 @@ function _civicrm_api3_ovhmailinglist_modify_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_ovhmailinglist_modify($params) {	
+function civicrm_api3_o_v_h_mailing_list_modify($params) {	
   $txt = "inititation";
-  $myfile = file_put_contents(__DIR__ . '/logs.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
+  $myfile = file_put_contents('/var/www/html/logs.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
   $version = CRM_Core_BAO_Domain::version();
   if (!preg_match('/[0-9]+(,[0-9]+)*/i', $params['contact_id'])) {
     throw new API_Exception('Parameter contact_id must be a unique id or a list of ids separated by comma');
