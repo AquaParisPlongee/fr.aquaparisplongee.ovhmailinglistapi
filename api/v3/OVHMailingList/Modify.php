@@ -1,7 +1,6 @@
 <?php
-// require_once __DIR__ . '/../../../OVH_API/vendor/autoload.php';
-// require_once __DIR__ . '/../../../OVH_API/credential.php';
-// use \Ovh\Api;
+require_once __DIR__ . '/vendor/autoload.php';
+use \Ovh\Api;
 
 /**
  * OVHMailingList.Modify API specification (optional)
@@ -49,8 +48,7 @@ function _civicrm_api3_o_v_h_mailing_list_modify_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_o_v_h_mailing_list_modify($params) {	
-  $txt = "inititation";
-  $myfile = file_put_contents('/var/www/html/logs.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
+  require __DIR__ . '/credential.php';
   $version = CRM_Core_BAO_Domain::version();
   if (!preg_match('/[0-9]+(,[0-9]+)*/i', $params['contact_id'])) {
     throw new API_Exception('Parameter contact_id must be a unique id or a list of ids separated by comma');
@@ -61,7 +59,7 @@ function civicrm_api3_o_v_h_mailing_list_modify($params) {
     $case_id = $params['case_id'];
   }
 
-  if (isset($params['list_name']) || isset($params['list_domain']) || isset($params['modify'])) {
+  if (!isset($params['list_name']) || !isset($params['list_domain']) || !isset($params['modify'])) {
     throw new API_Exception('You have to provide list_name and list_domain and modify');
   }
   $list_name = $params['list_name'];
@@ -120,47 +118,56 @@ function civicrm_api3_o_v_h_mailing_list_modify($params) {
       $email = $contact['email'];
     }
 
-    //
-    /// TODO: The real action occure here.
-    // set up the parameters for CRM_Utils_Mail::send
-    if (modify == 0){
-        throw new API_Exception('Remove ' . $contact['display_name'] . ' <' . $email . '> ');
-        // $ovh = new Api($applicationKey,
-        //                $applicationSecret,
-        //                $endpoint,
-        //                $DELETE_consumer_key);
+
+    $ovh = new Api($applicationKey,
+                   $applicationSecret,
+                   $endpoint,
+                   $consumer_key);
+    //GET
+    try {
+        $result = $ovh->get('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber/' . $email);
+        $present = TRUE;
+    } catch (GuzzleHttp\Exception\ClientException $e) {
+        $response = $e->getResponse();
+        if ($response->getStatusCode() == 404) {
+            $present = FALSE;
+        }
+    }
+    if ($modify == 1) {
+        if ($present == FALSE) {
+            //ADD
+            $result = $ovh->post('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber',
+                                 array('email' => $email));
+            $details = "Add to $list_name@$list_domain list.";
+        } else {
+            $details = "Already in $list_name@$list_domain list: not added.";
+        }
+    } elseif ($modify == 0){
+        if ($present) {
+            //DELETE
+            $result = $ovh->delete('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber/' . $email);
+            $details = "Remove from $list_name@$list_domain list.";
+        } else {
+            $details = "Not in $list_name@$list_domain list: not removed.";
+        }
     } else {
-        throw new API_Exception('Add ' . $contact['display_name'] . ' <' . $email . '> ');
-        // $ovh = new Api($applicationKey,
-        //                $applicationSecret,
-        //                $endpoint,
-        //                $POST_consumer_key);
-        //
-        // $result = $ovh->post('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber',
-        //                      array(
-        //                         'email' => $email, // Required: Email of subscriber (type: string)
-        //                     ));
+        $details = "unknown action modify: " . $modify;
     }
-    if (!$result) {
-      throw new API_Exception('Error sending e-mail to ' . $contact['display_name'] . ' <' . $email . '> ');
-    }
-    ////-------------------------------------------////
 
-    //create activity for sending e-mail.
-    $activityTypeID = CRM_Core_OptionGroup::getValue('activity_type', 'OVHMailingList', 'name');
-
-    $subject = 'Mailing list subscription modification';
-    $details = "$modify " . $contact['display_name'] . " to/from $list_name@$list_domain list.";
-    // CRM-6265: save both text and HTML parts in details (if present)
+    $myfile = file_put_contents('/var/www/html/logs.txt', $details.PHP_EOL , FILE_APPEND | LOCK_EX);
+    // Save the result as activity
+    // $subject = "Mailing list subscription modification $list_name@$list_domain";
+    $activityTypeID = CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Email');
 
     $activityParams = array(
-      'source_contact_id' => $contactId,
-      'activity_type_id' => $activityTypeID,
-      'activity_date_time' => date('YmdHis'),
-      'subject' => $subject,
-      'details' => $details,
-      // FIXME: check for name Completed and get ID from that lookup
-      'status_id' => 2,
+        'source_contact_id' => $contactId,
+        'target_contact_id' => $contactId,
+        'activity_type_id' => $activityTypeID,
+        'activity_date_time' => date('YmdHis'),
+        'subject' => $details,
+        'details' => $details,
+        // FIXME: check for name Completed and get ID from that lookup
+        'status_id' => 2,
     );
 
     $activity = CRM_Activity_BAO_Activity::create($activityParams);
