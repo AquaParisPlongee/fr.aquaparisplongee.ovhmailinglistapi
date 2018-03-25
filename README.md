@@ -1,4 +1,4 @@
-# org.civicoop.emailapi
+# fr.aquaparisplongee.ovhmailinglistapi
 E-mail API for CiviCRM to send e-mails through the API
 
 The entity for the E-mail API is Email and the action is Send.

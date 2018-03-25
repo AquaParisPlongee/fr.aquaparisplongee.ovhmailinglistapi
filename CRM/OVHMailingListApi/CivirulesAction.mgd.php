@@ -1,17 +1,17 @@
 <?php
 
-if (_emailapi_is_civirules_installed()) {
+if (_ovhmailinglistapi_is_civirules_installed()) {
   return array (
     0 =>
       array (
-        'name' => 'Civirules:Action.Emailapi',
+        'name' => 'Civirules:Action.OVHMailingListApi',
         'entity' => 'CiviRuleAction',
         'params' =>
           array (
             'version' => 3,
-            'name' => 'emailapi_send',
+            'name' => 'ovhmailinglistapi_send',
             'label' => 'Send e-mail',
-            'class_name' => 'CRM_Emailapi_CivirulesAction',
+            'class_name' => 'CRM_OVHMailingListApi_CivirulesAction',
             'is_active' => 1
           ),
       ),

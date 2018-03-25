@@ -1,11 +1,11 @@
 <?php
 /**
- * Class for CiviRule Condition Emailapi
+ * Class for CiviRule Condition OVHMailingListApi
  *
  * @author Jaap Jansma (CiviCooP) <jaap.jansma@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
-class CRM_Emailapi_CivirulesAction extends CRM_CivirulesActions_Generic_Api {
+class CRM_OVHMailingListApi_CivirulesAction extends CRM_CivirulesActions_Generic_Api {
 
   /**
    * Method to get the api entity to process in this CiviRule action
@@ -65,7 +65,7 @@ class CRM_Emailapi_CivirulesAction extends CRM_CivirulesActions_Generic_Api {
    * $access public
    */
   public function getExtraDataInputUrl($ruleActionId) {
-    return CRM_Utils_System::url('civicrm/civirules/actions/emailapi', 'rule_action_id='.$ruleActionId);
+    return CRM_Utils_System::url('civicrm/civirules/actions/ovhmailinglistapi', 'rule_action_id='.$ruleActionId);
   }
 
   /**

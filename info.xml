@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<extension key="org.civicoop.emailapi" type="module">
-  <file>emailapi</file>
+<extension key="fr.aquaparisplongee.ovhmailinglistapi" type="module">
+  <file>ovhmailinglistapi</file>
   <name>E-mail API</name>
   <description>API to send an e-mail to a contact</description>
   <license>AGPL-3.0</license>
@@ -9,8 +9,8 @@
     <email>helpdesk@civicoop.org</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">https://github.com/CiviCooP/org.civicoop.emailapi</url>
-    <url desc="documentation">https://github.com/CiviCooP/org.civicoop.emailapi/blob/master/README.md</url>
+    <url desc="Main Extension Page">https://github.com/CiviCooP/fr.aquaparisplongee.ovhmailinglistapi</url>
+    <url desc="documentation">https://github.com/CiviCooP/fr.aquaparisplongee.ovhmailinglistapi/blob/master/README.md</url>
     <url desc="Support">http://civicoop.org</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
@@ -28,6 +28,6 @@
     Original developed by http://civicoop.org. Contributed by http://www.ixiam.com
   </comments>
   <civix>
-    <namespace>CRM/Emailapi</namespace>
+    <namespace>CRM/OVHMailingListApi</namespace>
   </civix>
 </extension>
