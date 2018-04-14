@@ -70,9 +70,8 @@ class CRM_CivirulesAction_OVHMailingListApi_Sync extends CRM_CivirulesActions_Ge
    */
   public function userFriendlyConditionParams() {
     $params = $this->getActionParameters();
-    $group = ts('the group');
-    return ts('Sync the registration of %1 to the the mailing list %2@%3', array(
-        1=>$group,
+    return ts('Sync the registration of group "%1" with the mailing list %2@%3', array(
+        1=>$params['group_id'],
         2=>$params['list_name'],
         3=>$params['list_domain'],
     ));
