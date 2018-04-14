@@ -98,15 +98,7 @@ function civicrm_api3_o_v_h_mailing_list_modify($params) {
       $contact['case.id'] = $case_id;
     }
 
-    if ($alternativeEmailAddress) {
-      /**
-       * If an alternative reciepient address is given
-       * then send e-mail to that address rather than to
-       * the e-mail address of the contact
-       *
-       */
-      $email = $alternativeEmailAddress;
-    } elseif ($contact['do_not_email'] || empty($contact['email']) || CRM_Utils_Array::value('is_deceased', $contact) || $contact['on_hold']) {
+    if ($contact['do_not_email'] || empty($contact['email']) || CRM_Utils_Array::value('is_deceased', $contact) || $contact['on_hold']) {
       /**
        * Contact is decaused or has opted out from mailings so do not send the e-mail
        */
