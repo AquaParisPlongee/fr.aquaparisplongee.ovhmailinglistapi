@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
 <menu>
   <item>
-      <path>civicrm/civirules/actions/ovhmailinglistapi/modify</path>
+    <path>civicrm/civirules/actions/ovhmailinglistapi/modify</path>
     <page_callback>CRM_CivirulesAction_OVHMailingListApi_Form_Modify</page_callback>
     <title>Modify OVH mailinglist api (civirules action)</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civirules/actions/ovhmailinglistapi/sync</path>
+    <page_callback>CRM_CivirulesAction_OVHMailingListApi_Form_Sync</page_callback>
+    <title>Sync OVH mailinglist api (civirules action)</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>
