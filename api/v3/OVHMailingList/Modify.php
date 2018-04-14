@@ -154,7 +154,7 @@ function civicrm_api3_o_v_h_mailing_list_modify($params) {
         $details = "unknown action modify: " . $modify;
     }
 
-    $myfile = file_put_contents('/var/www/html/logs.txt', $details.PHP_EOL , FILE_APPEND | LOCK_EX);
+    // $myfile = file_put_contents('/var/www/html/logs.txt', $details.PHP_EOL , FILE_APPEND | LOCK_EX);
     // Save the result as activity
     // $subject = "Mailing list subscription modification $list_name@$list_domain";
     $activityTypeID = CRM_Core_PseudoConstant::getKey('CRM_Activity_BAO_Activity', 'activity_type_id', 'Email');
