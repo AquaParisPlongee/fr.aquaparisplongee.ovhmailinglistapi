@@ -5,7 +5,7 @@
  * @author Jaap Jansma (CiviCooP) <jaap.jansma@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
-class CRM_OVHMailingListApi_CivirulesAction extends CRM_CivirulesActions_Generic_Api {
+class CRM_CivirulesAction_OVHMailingListApi_Modify extends CRM_CivirulesActions_Generic_Api {
 
   /**
    * Method to get the api entity to process in this CiviRule action

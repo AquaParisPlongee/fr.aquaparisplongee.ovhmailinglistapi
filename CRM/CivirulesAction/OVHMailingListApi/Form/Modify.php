@@ -7,7 +7,7 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_OVHMailingListApi_Form_CivirulesAction extends CRM_Core_Form {
+class CRM_CivirulesAction_OVHMailingListApi_Form_Modify extends CRM_Core_Form {
 
   protected $ruleActionId = false;
 

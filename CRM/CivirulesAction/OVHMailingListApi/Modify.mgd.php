@@ -11,7 +11,7 @@ if (_ovhmailinglistapi_is_civirules_installed()) {
             'version' => 3,
             'name' => 'ovhmailinglistapi_modify',
             'label' => 'Modify OVH mailing list subscription',
-            'class_name' => 'CRM_OVHMailingListApi_CivirulesAction',
+            'class_name' => 'CRM_CivirulesAction_OVHMailingListApi_Modify',
             'is_active' => 1
           ),
       ),
