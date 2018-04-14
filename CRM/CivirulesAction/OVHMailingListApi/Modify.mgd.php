@@ -1,10 +1,10 @@
 <?php
 
-if (_ovhmailinglistapi_is_civirules_installed()) {
+if (_ovhmailinglistapi_modify_is_civirules_installed()) {
   return array (
     0 =>
       array (
-        'name' => 'Civirules:Action.OVHMailingListApi',
+        'name' => 'Civirules:Action.OVHMailingListApi.Modify',
         'entity' => 'CiviRuleAction',
         'params' =>
           array (

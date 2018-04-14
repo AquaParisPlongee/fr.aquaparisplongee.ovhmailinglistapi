@@ -58,7 +58,7 @@ class CRM_CivirulesAction_OVHMailingListApi_Modify extends CRM_CivirulesActions_
    * $access public
    */
   public function getExtraDataInputUrl($ruleActionId) {
-    return CRM_Utils_System::url('civicrm/civirules/actions/ovhmailinglistapi', 'rule_action_id='.$ruleActionId);
+    return CRM_Utils_System::url('civicrm/civirules/actions/ovhmailinglistapi/modify', 'rule_action_id='.$ruleActionId);
   }
 
   /**
