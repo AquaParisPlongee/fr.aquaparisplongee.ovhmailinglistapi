@@ -85,18 +85,22 @@ function civicrm_api3_o_v_h_mailing_list_sync($params) {
           array_push($group_email_list, $contact['email']);
       }
   }
+  $add_counter=0;
   foreach ($group_email_list as $email){
       if (!in_array($email, $ovh_email_list)){
           $result = $ovh->post('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber',
                                array('email' => $email));
           $details = "Add to $list_name@$list_domain list.";
+          $add_counter = $add_counter + 1;
           register_OVHMailingList_activity($email, $details, $case_id);
       }
   }
+  $rm_counter=0;
   foreach ($ovh_email_list as $email){
       if (!in_array($email, $group_email_list)){
           $result = $ovh->delete('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber/' . $email);
           $details = "Remove from $list_name@$list_domain list.";
+          $rm_counter = $rm_counter + 1;
           register_OVHMailingList_activity($email, $details, $case_id);
       }
   }
@@ -104,7 +108,7 @@ function civicrm_api3_o_v_h_mailing_list_sync($params) {
   $returnValues[$group_id] = array(
     'group_id' => $group_id,
     'sync' => 1,
-    'status_msg' => "Succesfully sync subscription to $list_name@$list_domain",
+    'status_msg' => "Succesfully sync subscription to $list_name@$list_domain (add $add_counter and remove $rm_counter)",
   );
 
 
