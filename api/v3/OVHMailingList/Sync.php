@@ -75,6 +75,7 @@ function civicrm_api3_o_v_h_mailing_list_sync($params) {
                                  'sequential' => 1,
                                  'group_id' => $group_id,
                                  'status' => "Added",
+                                 'options' => array( 'limit' => 200,),
                                 ));
   $group_email_list = array();
   if ($group_contacts['count'] > 0) {
