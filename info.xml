@@ -2,7 +2,7 @@
 <extension key="fr.aquaparisplongee.ovhmailinglistapi" type="module">
   <file>ovhmailinglistapi</file>
   <name>OVH mailinglist API</name>
-  <description>API to modify the subscription to an OVH hosted mailing list</description>
+  <description>API to manage the subscription to an OVH hosted mailing list. This extension provide API to add/remove a contact to a given OVH mailing list (modify) and to synchornise a group with a given OVH mailing list (sync). The corresponding CiviRules actions are also provided.</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Thomas Blein - Aqua Paris Plongée</author>
@@ -14,8 +14,8 @@
     <url desc="Support">http://tobedetermined</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
-  <releaseDate>2018-03-24</releaseDate>
-  <version>0.2</version>
+  <releaseDate>2018-04-15</releaseDate>
+  <version>0.3</version>
   <develStage>incubation</develStage>
   <compatibility>
     <ver>4.7</ver>
