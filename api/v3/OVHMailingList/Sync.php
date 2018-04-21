@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 use \Ovh\Api;
+use GuzzleHttp\Client;
 
 /**
  * OVHMailingList.Modify API specification (optional)
@@ -42,6 +43,7 @@ function _civicrm_api3_o_v_h_mailing_list_sync_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_o_v_h_mailing_list_sync($params) {	
+  // $myfile = file_put_contents(__DIR__ . '/logs.txt', print_r($params, true).PHP_EOL , FILE_APPEND | LOCK_EX);
   require __DIR__ . '/credential.php';
   $version = CRM_Core_BAO_Domain::version();
   if (!preg_match('/[0-9]+/i', $params['group_id'])) {
@@ -59,18 +61,17 @@ function civicrm_api3_o_v_h_mailing_list_sync($params) {
   $list_name = $params['list_name'];
   $list_domain = $params['list_domain'];
 
-  $domain     = CRM_Core_BAO_Domain::getDomain();
   $result     = NULL;
   $hookTokens = array();
 
-
-
+  // $myfile = file_put_contents(__DIR__ . '/logs.txt', 'Search OVH list'.PHP_EOL , FILE_APPEND | LOCK_EX);
   $ovh = new Api($applicationKey,
                  $applicationSecret,
                  $endpoint,
                  $consumer_key);
 
   $ovh_email_list = $ovh->get('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber');
+  // $myfile = file_put_contents(__DIR__ . '/logs.txt', 'CiviCRM group content'.PHP_EOL , FILE_APPEND | LOCK_EX);
   $group_contacts = civicrm_api3('GroupContact', 'get', array(
                                  'sequential' => 1,
                                  'group_id' => $group_id,
@@ -88,7 +89,8 @@ function civicrm_api3_o_v_h_mailing_list_sync($params) {
   }
   $add_counter=0;
   foreach ($group_email_list as $email){
-      if (!in_array($email, $ovh_email_list)){
+      // $myfile = file_put_contents(__DIR__ . '/logs.txt', 'Current email: >'.$email."<".PHP_EOL , FILE_APPEND | LOCK_EX);
+      if ($email != '' & !in_array($email, $ovh_email_list)){
           $result = $ovh->post('/email/domain/' . $list_domain . '/mailingList/' . $list_name . '/subscriber',
                                array('email' => $email));
           $details = "Add to $list_name@$list_domain list.";
